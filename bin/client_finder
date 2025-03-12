@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Add lib directory to load path
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '../lib')
+
+require 'client_finder'
+
+cli = ClientFinder::CLI::CommandLineInterface.new
+cli.run(ARGV)
