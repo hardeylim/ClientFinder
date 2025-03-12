@@ -107,11 +107,6 @@ Run specific test file:
 bundle exec rspec spec/path/to/file_spec.rb
 ```
 
-Run tests with focus tag:
-```bash
-bundle exec rspec --tag focus
-```
-
 ### Test Coverage
 
 Test coverage reports are generated automatically when running tests. After running the tests, open `coverage/index.html` in your browser to view the coverage report.
