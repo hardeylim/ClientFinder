@@ -16,7 +16,7 @@ A minimalist command-line application for searching client data and finding dupl
 
 1. Clone the repository:
    ```
-   git clone [repository-url]
+   git clone https://github.com/hardeylim/ClientFinder
    cd ClientFinder
    ```
 
