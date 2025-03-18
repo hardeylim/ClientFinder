@@ -1,12 +1,14 @@
 # ClientFinder
 
-A minimalist command-line application for searching client data and finding duplicates.
+A minimalist command-line application for searching client and staff data with advanced search capabilities.
 
 ## Features
 
-- Search clients by name (partial, case-insensitive matching)
-- Find clients with duplicate email addresses
-- Extensible architecture for future enhancements
+- Search records by name (partial, case-insensitive matching)
+- Find duplicate email addresses across records
+- Search staff by rating threshold
+- Generic JSON data handling for flexible record types
+- Multiple data source support (clients.json, staff.json)
 
 ## Requirements
 
@@ -27,19 +29,26 @@ A minimalist command-line application for searching client data and finding dupl
 
 ## Usage
 
-### Search for clients by name
+### Search for records by name
 
 ```
-./bin/client_finder search "John"
+./bin/client_finder search "John"              # Search in clients.json (default)
+./bin/client_finder search "John" staff        # Search in staff.json
 ```
 
-### Search for clients by a specific field
+### Search for records by a specific field
 
 ```
 ./bin/client_finder search "john.doe@gmail.com" --field email
 ```
 
-### Find clients with duplicate emails
+### Search for staff by rating
+
+```
+./bin/client_finder ratings 3.5 staff          # Find staff with rating >= 3.5
+```
+
+### Find duplicate emails
 
 ```
 ./bin/client_finder find-duplicates
@@ -53,29 +62,33 @@ A minimalist command-line application for searching client data and finding dupl
 
 ## Assumptions
 
-- The JSON file structure follows the format provided in the challenge
-- The client data contains at minimum the fields: id, full_name, and email
+- JSON files can contain any fields, with optional rating field for staff data
+- Records can be either client or staff data with common searchable fields
+- Generic record handling allows for flexible data structures
 - Case-insensitive searching is desired for better user experience
 - The application will be run in a Unix-like environment
 
 ## Project Structure
 
 - `bin/`: Contains the executable script
-- `data/`: Contains the client data JSON file
+- `data/`: Contains JSON data files (clients.json, staff.json)
 - `lib/`: Contains the application code
-  - `models/`: Data models
-  - `repository/`: Data access layer
-  - `services/`: Business logic
+  - `models/`: Data models (Client, Staff)
+  - `repository/`: Data access layer with generic JSON handling
+  - `services/`: Business logic (Search, Ratings, Duplicate Finding)
   - `cli/`: Command-line interface
 
 ## Future Enhancements
 
 The application is designed to be easily extended with:
 
-1. Support for any JSON file with dynamic field specification
-2. REST API interface for the same functionality
-3. Scalable design for larger datasets
-4. Additional search and analytics capabilities
+1. Additional data source support with automatic schema detection
+2. Advanced filtering and sorting capabilities
+3. Data validation and schema enforcement
+4. Record comparison and merging features
+5. REST API interface for remote access
+6. Scalable design for larger datasets
+7. Enhanced analytics and reporting features
 
 ## Development
 
@@ -112,9 +125,10 @@ bundle exec rspec spec/path/to/file_spec.rb
 Test coverage reports are generated automatically when running tests. After running the tests, open `coverage/index.html` in your browser to view the coverage report.
 
 The test suite includes:
-- Unit tests for all models and services
+- Unit tests for models and services
 - Integration tests for the command-line interface
 - Test coverage for edge cases and error handling
+- Validation of generic data handling
 
 ## Contributing
 
