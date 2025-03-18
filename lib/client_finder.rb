@@ -20,7 +20,6 @@ module ClientFinder
     attr_accessor :data_path
 
     def initialize
-      @data_path = Repository::ClientRepository::DEFAULT_DATA_PATH
     end
   end
 

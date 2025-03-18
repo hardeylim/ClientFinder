@@ -32,8 +32,8 @@ RSpec.describe ClientFinder::Repository::ClientRepository do
         .and_return(json_file)
 
       repository = described_class.new
-      expect(repository.clients.size).to eq(4)
-      expect(repository.clients.first.full_name).to eq('John Doe')
+      expect(repository.records.size).to eq(4)
+      expect(repository.records.first.full_name).to eq('John Doe')
     end
 
     it 'loads from custom path when provided' do
@@ -43,8 +43,8 @@ RSpec.describe ClientFinder::Repository::ClientRepository do
         .and_return(json_file)
 
       repository = described_class.new(custom_path)
-      expect(repository.clients.size).to eq(4)
-      expect(repository.clients.first.full_name).to eq('John Doe')
+      expect(repository.records.size).to eq(4)
+      expect(repository.records.first.full_name).to eq('John Doe')
     end
   end
 

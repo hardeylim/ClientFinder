@@ -1,28 +1,39 @@
 # frozen_string_literal: true
 
 require 'json'
-require_relative '../models/client'
 
 module ClientFinder
   module Repository
     # Repository for managing client data
     class ClientRepository
-      attr_reader :clients
+      attr_reader :records
+
+      CLIENTS = 'clients'
+      STAFF = 'staff'
 
       DEFAULT_DATA_PATH = File.expand_path('../../data/clients.json', __dir__)
+      STAFF_PATH = File.expand_path('../../data/staff.json', __dir__)
 
-      def initialize(file_path = DEFAULT_DATA_PATH)
-        @clients = []
-        load_from_file(file_path)
+      def initialize(source = CLIENTS)
+        @records = []
+        load_from_file(source)
       end
 
       # Load clients from a JSON file
-      def load_from_file(file_path)
-        @clients = []
+      def load_from_file(source)
+        puts "Source: #{source}"
+        file_path = case source
+                    when 'staff'
+                      STAFF_PATH
+                    else
+                      DEFAULT_DATA_PATH
+                    end
+
+        @records = []
         begin
           full_path = File.expand_path(file_path)
           data = JSON.parse(File.read(full_path))
-          @clients = data.map { |client_data| Models::Client.from_hash(client_data) }
+          @records = data
         rescue Errno::ENOENT
           raise "File not found: #{file_path}"
         rescue JSON::ParserError
@@ -34,8 +45,16 @@ module ClientFinder
       def search_by_name(query)
         return [] if query.nil? || query.empty?
 
-        @clients.select do |client|
-          client.full_name.downcase.include?(query.downcase)
+        @records.select do |record|
+          record['full_name'].to_s.downcase.include?(query.downcase)
+        end
+      end
+
+      def search_by_rating(query)
+        return [] if query.nil?
+
+        @records.select do |record|
+          (record['rating'] || 0).to_f >= query
         end
       end
 
@@ -44,8 +63,8 @@ module ClientFinder
         return [] if query.nil? || query.empty?
         return [] unless client_has_field?(field)
 
-        @clients.select do |client|
-          value = client.send(field.to_sym).to_s.downcase
+        @records.select do |record|
+          value = record[field].to_s.downcase
           value.include?(query.downcase)
         end
       end
@@ -54,8 +73,8 @@ module ClientFinder
       def find_duplicate_emails
         emails = Hash.new { |hash, key| hash[key] = [] }
 
-        @clients.each do |client|
-          emails[client.email.downcase] << client
+        @records.each do |record|
+          emails[record['email'].to_s.downcase] << record
         end
 
         # Return only emails that have more than one client
@@ -65,7 +84,7 @@ module ClientFinder
       private
 
       def client_has_field?(field)
-        Models::Client.instance_methods.include?(field.to_sym)
+        @records.first&.key?(field) || false
       end
     end
   end
