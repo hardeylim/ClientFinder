@@ -12,7 +12,7 @@ RSpec.describe ClientFinder::CLI::CommandLineInterface do
 
   before do
     # Repository is initialized with default path
-    allow(ClientFinder::Repository::ClientRepository).to receive(:new)
+    allow(ClientFinder::Repository::ClientJsonFileRepository).to receive(:new)
       .with(no_args)
       .and_return(repository)
     allow(ClientFinder::Services::SearchService).to receive(:new).and_return(search_service)

@@ -4,7 +4,7 @@ require 'rspec'
 require 'tempfile'
 require_relative '../../lib/repository/client_repository'
 
-RSpec.describe ClientFinder::Repository::ClientRepository do
+RSpec.describe ClientFinder::Repository::ClientJsonFileRepository do
   let(:client_data) do
     [
       { 'id' => 1, 'full_name' => 'John Doe', 'email' => 'john.doe@example.com' },
@@ -57,7 +57,7 @@ RSpec.describe ClientFinder::Repository::ClientRepository do
 
   describe '#search_by_name' do
     let(:repository) do
-      repo = ClientFinder::Repository::ClientRepository.new
+      repo = ClientFinder::Repository::ClientJsonFileRepository.new
       repo.load_from_file(json_file)
       repo
     end
@@ -84,7 +84,7 @@ RSpec.describe ClientFinder::Repository::ClientRepository do
 
   describe '#find_duplicate_emails' do
     let(:repository) do
-      repo = ClientFinder::Repository::ClientRepository.new
+      repo = ClientFinder::Repository::ClientJsonFileRepository.new
       repo.load_from_file(json_file)
       repo
     end

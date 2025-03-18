@@ -48,7 +48,7 @@ module ClientFinder
       private
 
       def initialize_repo(source)
-        @repository = Repository::ClientRepository.new(source)
+        @repository = Repository::ClientJsonFileRepository.new(source)
         @search_service = Services::SearchService.new(@repository)
         @duplicate_finder_service = Services::DuplicateFinderService.new(@repository)
         @ratings_service = Services::RatingsService.new(@repository)

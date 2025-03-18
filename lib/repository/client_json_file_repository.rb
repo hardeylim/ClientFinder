@@ -4,8 +4,8 @@ require 'json'
 
 module ClientFinder
   module Repository
-    # Repository for managing client data
-    class ClientRepository
+    # Repository for managing data
+    class ClientJsonFileRepository
       attr_reader :records
 
       CLIENTS = 'clients'
